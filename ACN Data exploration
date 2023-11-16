@@ -1,86 +1,86 @@
-import os
-import pytz
-import pandas as pd 
-from datetime import datetime
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from acnportal import acnsim
-from acnportal import algorithms
+import requests
+from requests.auth import HTTPBasicAuth
+from datetime import datetime
+import pytz
+import os
+import base64
 
-# Timezone of the ACN we are using.
+# Fetch the API token from the environment variable
+api_token = os.getenv('API_KEY')
+
+# Define the time zone
 timezone = pytz.timezone('Europe/Amsterdam')
 
-# Start and End times are used when collecting data.
-start = timezone.localize(datetime(2018, 9, 5))
-end = timezone.localize(datetime(2018, 9, 6))
+# Start and End times are used when collecting data
+start = timezone.localize(datetime(2018, 9, 5)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+end = timezone.localize(datetime(2018, 9, 6)).strftime('%a, %d %b %Y %H:%M:%S GMT')
 
-# How long each time discrete time interval in the simulation should be.
-period = 5  # minutes
+# API endpoint
+site_id = "caltech"  # Example site_id
+url = f"https://ev.caltech.edu/api/v1/sessions/{site_id}?where=connectionTime>='{start}' and connectionTime<='{end}'&pretty"
 
-# Voltage of the network.
-voltage = 220  # volts
+# Make the HTTP request with Basic Authentication
+response = requests.get(url, auth=HTTPBasicAuth(api_token, ''))
 
-# Default maximum charging rate for each EV battery.
-default_battery_power = 32 * voltage / 1000 # kW
+if response.status_code == 200:
+    data = response.json()
+    sessions = data['_items']  # Extract the list of session records
 
-# Identifier of the site where data will be gathered.
-site = 'caltech'
+    # Convert this list of dictionaries to a DataFrame
+    df1 = pd.DataFrame(sessions)
+    print(df1.head())
 
-# Retrieve the API key from environment variables.
-API_KEY = os.getenv('API_KEY')
+    # processing df1
+else:
+    print("Failed to fetch data. Status code:", response.status_code)
+    print("Response:", response.text)
+    exit()  # Exit if the request failed
 
-# Generate events using the acnportal library.
-events = acnsim.acndata_events.generate_events(
-    API_KEY, site, start, end, period, voltage, default_battery_power
-)
+##Average Daily Arrival and Departure Distribution##
 
+# Convert the columns to datetime
+df1['connectionTime'] = pd.to_datetime(df1['connectionTime'])
+df1['disconnectTime'] = pd.to_datetime(df1['disconnectTime'])
 
-# Convert the events to a DataFrame.
-df_events = pd.DataFrame([event.to_dict() for event in events])
+# Extract the hours and days
+df1['ArrivalHour'] = df1['connectionTime'].dt.hour
+df1['DepartureHour'] = df1['disconnectTime'].dt.hour
+df1['DayOfWeek'] = df1['connectionTime'].dt.dayofweek
 
-# The `to_dict` method for each event object converts it to a dictionary.
-# Now `df_events` is a DataFrame similar to `df1` in your previous code.
+# Segregate df1 into weekdays and weekends
+df_weekdays = df1[df1['DayOfWeek'].between(0, 4)]
+df_weekends = df1[df1['DayOfWeek'].between(5, 6)]
 
-# Convert the connection and disconnection times to datetime.
-df_events['connectionTime'] = pd.to_datetime(df_events['connection_time'])
-df_events['disconnectTime'] = pd.to_datetime(df_events['disconnect_time'])
-
-# Extract the hours and days from the connection times.
-df_events['ArrivalHour'] = df_events['connectionTime'].dt.hour
-df_events['DepartureHour'] = df_events['disconnectTime'].dt.hour
-df_events['DayOfWeek'] = df_events['connectionTime'].dt.dayofweek
-
-# Segregate the events into weekdays and weekends.
-df_weekdays = df_events[df_events['DayOfWeek'].between(0, 4)]
-df_weekends = df_events[df_events['DayOfWeek'].between(5, 6)]
-
-def plot_distribution(df, title_suffix):
-    arrival_counts = df['ArrivalHour'].value_counts().sort_index()
-    departure_counts = df['DepartureHour'].value_counts().sort_index()
+def plot_distribution(arrival_df, departure_df, title_suffix):
+    # Combine arrival and departure data into a single dataframe
+    combined_df = pd.DataFrame({
+        'Arrivals': arrival_df['ArrivalHour'].value_counts().sort_index(),
+        'Departures': departure_df['DepartureHour'].value_counts().sort_index()
+    })
     
-    width = 0.4  # Width of the bars
-    hours = range(24)
-    
-    # Create positions for each bar
-    arrival_positions = [hour - width/2 for hour in hours]
-    departure_positions = [hour + width/2 for hour in hours]
-    
-    plt.figure(figsize=(12, 5))
-    
-    # Plot the bars for arrivals and departures side by side
-    plt.bar(arrival_positions, arrival_counts.reindex(hours, fill_value=0), width=width, label='Arrival', align='center')
-    plt.bar(departure_positions, departure_counts.reindex(hours, fill_value=0), width=width, label='Departure', align='center')
-    
-    plt.title(f'Average Distribution over 24 Hours ({title_suffix})')
+    # Plot the grouped bar chart
+    combined_df.plot(kind='bar', figsize=(10, 5))
+    plt.title(f'Combined Arrival and Departure Distribution over 24 Hours ({title_suffix})')
     plt.xlabel('Hour of Day')
     plt.ylabel('Count')
-    plt.xticks(hours)
-    plt.legend()
+    plt.xticks(range(24))
     plt.tight_layout()
 
-# Plot distributions for weekdays and weekends
-plot_distribution(df_weekdays, 'Weekdays')
-plot_distribution(df_weekends, 'Weekends')
+# Separate arrival and departure dataframes for weekdays and weekends
+arrival_weekdays = df_weekdays[['ArrivalHour']]
+departure_weekdays = df_weekdays[['DepartureHour']]
+arrival_weekends = df_weekends[['ArrivalHour']]
+departure_weekends = df_weekends[['DepartureHour']]
 
+#print to check
+print("Weekend Arrivals:\n", arrival_weekends)
+print("Weekend Departures:\n", departure_weekends)
+
+# Plot distributions for weekdays (arrival and departure combined) and weekends (arrival and departure combined)
+plot_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
+plot_distribution(arrival_weekends, departure_weekends, 'Weekends')
 
 plt.show()
