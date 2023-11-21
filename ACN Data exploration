@@ -16,45 +16,47 @@ api_token = os.getenv('API_KEY')
 timezone = pytz.timezone('Europe/Amsterdam')
 
 # Define the start and end times for the data collection period
-start = timezone.localize(datetime(2018, 10, 6)).strftime('%a, %d %b %Y %H:%M:%S GMT')
-end = timezone.localize(datetime(2018, 10, 8)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+start = timezone.localize(datetime(2018, 9, 3)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+end = timezone.localize(datetime(2018, 9, 9)).strftime('%a, %d %b %Y %H:%M:%S GMT')
 
-# API endpoint
-site_id = "caltech"  # Example site_id
-url = f"https://ev.caltech.edu/api/v1/sessions/{site_id}?where=connectionTime>='{start}' and connectionTime<='{end}'&pretty"
+# Function to fetch data
+def fetch_data(url):
+    response = requests.get(url, auth=HTTPBasicAuth(api_token, ''))
+    if response.status_code == 200:
+        data = response.json()
+        sessions = pd.DataFrame(data['_items'])
+        next_link = data['_links'].get('next', {}).get('href')
+        return sessions, next_link
+    else:
+        print("Failed to fetch data. Status code:", response.status_code)
+        return pd.DataFrame(), None
 
-# Make the HTTP request with Basic Authentication
-response = requests.get(url, auth=HTTPBasicAuth(api_token, ''))
+# API endpoint with pagination handling
+site_id = "caltech"  
+initial_url = f"https://ev.caltech.edu/api/v1/sessions/{site_id}/?where=connectionTime>='{start}' and connectionTime<='{end}'&pretty"
 
-#If the response is successful (status code 200), the JSON data from the response is parsed and converted into a DataFrame
-if response.status_code == 200:
-    data = response.json()
-    sessions = data['_items']  # Extract the list of session records --> Relevant data is stored under the key _items
+# Fetch all pages of data
+all_data = pd.DataFrame()
+current_url = initial_url
+while current_url:
+    data, next_link = fetch_data(current_url)
+    all_data = pd.concat([all_data, data])
+    if next_link:
+        current_url = f"https://ev.caltech.edu/api/v1/{next_link}"
+    else:
+        break
 
-    # Convert this list of dictionaries to a DataFrame
-    df1 = pd.DataFrame(sessions)
-    print(df1.head()) #check columns
-
-    # processing df1
-else:
-    print("Failed to fetch data. Status code:", response.status_code)
-    print("Response:", response.text)
-    exit()  # Exit if the request failed
-
-##Average Daily Arrival and Departure Distribution##
-
-# Convert the columns to datetime
+# Convert relevant columns to datetime
+df1 = all_data
 df1['connectionTime'] = pd.to_datetime(df1['connectionTime'])
 df1['disconnectTime'] = pd.to_datetime(df1['disconnectTime'])
-df1['doneChargingTime'] = pd.to_datetime(df1['doneChargingTime'])  # Convert doneChargingTime to datetime
 
-# Sort the DataFrame by 'doneChargingTime' in descending order
-df1_sorted = df1.sort_values(by='doneChargingTime', ascending=False)
 
-# Print the first few rows of the sorted DataFrame
-print(df1_sorted.head())
+## Check the sorted DataFrame
+#df1_sorted = df1.sort_values(by='doneChargingTime', ascending=True) #switch acending to False to see latest date
+#print(df1_sorted.head())
 
-sys.exit()
+##Average Daily Arrival and Departure Distribution##
 
 # Extract the hours and days
 df1['ArrivalHour'] = df1['connectionTime'].dt.hour
@@ -78,10 +80,11 @@ arrival_distribution_by_date = df1.groupby('Date')['ArrivalHour'].count()
 departure_distribution_by_date = df1.groupby('Date')['DepartureHour'].count()
 
 # Define the start and end dates for the plot range
-start_date = datetime.strptime('Sat, 01 Sep 2018 00:00:00 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
-end_date = datetime.strptime('Sun, 30 Sep 2018 23:59:59 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+start_date = datetime.strptime('Mon, 3 Sep 2018 00:00:00 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+end_date = datetime.strptime('Sun, 9 Sep 2018 23:59:59 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
 
-##PLOT
+##PLOTTING##
+
 # Plot for the entire dataset using matplotlib directly
 plt.figure(figsize=(15, 6))
 
