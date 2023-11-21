@@ -64,6 +64,14 @@ df1['DepartureHour'] = df1['disconnectTime'].dt.hour
 df1['DayOfWeek'] = df1['connectionTime'].dt.dayofweek  #dt.day_name() for day name
 df1['Date'] = df1['connectionTime'].dt.date
 
+# Convert the 'kWhDelivered' column to a float, although it already is, just to be sure
+df1['kWhDelivered'] = pd.to_numeric(df1['kWhDelivered'], errors='coerce')
+
+# Aggregate kWhDelivered by hour for the entire dataset
+kwh_delivered_by_hour = df1.groupby(df1['ArrivalHour'])['kWhDelivered'].sum()
+
+# Aggregate kWhDelivered by date
+kwh_delivered_by_date = df1.groupby(df1['Date'])['kWhDelivered'].sum()
 
 # Segregate df1 into weekdays and weekends
 df_weekdays = df1[df1['DayOfWeek'].between(0, 4)]
@@ -80,8 +88,8 @@ arrival_distribution_by_date = df1.groupby('Date')['ArrivalHour'].count()
 departure_distribution_by_date = df1.groupby('Date')['DepartureHour'].count()
 
 # Define the start and end dates for the plot range
-start_date = datetime.strptime('Mon, 3 Sep 2018 00:00:00 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
-end_date = datetime.strptime('Sun, 9 Sep 2018 23:59:59 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+start_date = datetime.strptime('Mon, 03 Sep 2018 00:00:00 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+end_date = datetime.strptime('Sun, 09 Sep 2018 23:59:59 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
 
 ##PLOTTING##
 
@@ -106,13 +114,24 @@ plt.ylabel('Count')
 plt.xticks(rotation=45)  # Rotate the x-labels for better readability
 plt.xlim(start_date, end_date)  # Limit the x-axis
 
+# Plot for kWh Delivered by Date
+plt.figure(figsize=(15, 6))
+plt.plot(kwh_delivered_by_date, color='blue', marker='o', linestyle='-')
+plt.title('kWh Delivered by Date')
+plt.xlabel('Date')
+plt.ylabel('Total kWh Delivered')
+plt.xticks(rotation=45)
+plt.show()
+
 plt.tight_layout()
 plt.show()
-sys.exit()
+#sys.exit()
 
 #print to check
-print("Weekdays - Arrival and Departure Hours:\n", df_weekdays[['ArrivalHour', 'DepartureHour']])
+#print("Weekdays - Arrival and Departure Hours:\n", df_weekdays[['ArrivalHour', 'DepartureHour']])
 #print("Weekends - Arrival and Departure Hours:\n", df_weekends[['ArrivalHour', 'DepartureHour']])
+
+##NEXT PLOT##
 
 def plot_distribution(arrival_df, departure_df, title_suffix):
     # Combine arrival and departure data into a single dataframe
@@ -135,7 +154,6 @@ departure_weekdays = df_weekdays[['DepartureHour']]
 arrival_weekends = df_weekends[['ArrivalHour']]
 departure_weekends = df_weekends[['DepartureHour']]
 
-
 #print to check
 #print("Weekend Arrivals:\n", arrival_weekends)
 #print("Weekend Departures:\n", departure_weekends)
@@ -143,5 +161,19 @@ departure_weekends = df_weekends[['DepartureHour']]
 # Plot distributions for weekdays (arrival and departure combined) and weekends (arrival and departure combined)
 plot_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
 #plot_distribution(arrival_weekends, departure_weekends, 'Weekends')
+
+# Function to plot distribution of kWh Delivered
+def plot_kwh_distribution(hourly_df, title):
+    hourly_df.plot(kind='bar', figsize=(10, 5))
+    plt.title(f'{title} - kWh Delivered')
+    plt.xlabel('Hour of Day')
+    plt.ylabel('Total kWh Delivered')
+    plt.xticks(range(24))
+    plt.tight_layout()
+
+# Plot kWh Delivered for each hour
+plot_kwh_distribution(kwh_delivered_by_hour, 'Total kWh Delivered by Hour')
+
+
 
 plt.show()
