@@ -16,8 +16,8 @@ api_token = os.getenv('API_KEY')
 timezone = pytz.timezone('Europe/Amsterdam')
 
 # Define the start and end times for the data collection period
-start = timezone.localize(datetime(2018, 9, 1)).strftime('%a, %d %b %Y %H:%M:%S GMT')
-end = timezone.localize(datetime(2018, 9, 5)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+start = timezone.localize(datetime(2018, 10, 6)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+end = timezone.localize(datetime(2018, 10, 8)).strftime('%a, %d %b %Y %H:%M:%S GMT')
 
 # API endpoint
 site_id = "caltech"  # Example site_id
@@ -49,7 +49,7 @@ df1['disconnectTime'] = pd.to_datetime(df1['disconnectTime'])
 df1['doneChargingTime'] = pd.to_datetime(df1['doneChargingTime'])  # Convert doneChargingTime to datetime
 
 # Sort the DataFrame by 'doneChargingTime' in descending order
-df1_sorted = df1.sort_values(by='doneChargingTime', ascending=True)
+df1_sorted = df1.sort_values(by='doneChargingTime', ascending=False)
 
 # Print the first few rows of the sorted DataFrame
 print(df1_sorted.head())
