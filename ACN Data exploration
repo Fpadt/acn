@@ -7,6 +7,7 @@ from datetime import datetime
 import pytz #libary to work with timezones
 import os
 import base64
+import sys 
 
 # Fetch the API token from the environment variable (temporarily stored)
 api_token = os.getenv('API_KEY')
@@ -15,8 +16,8 @@ api_token = os.getenv('API_KEY')
 timezone = pytz.timezone('Europe/Amsterdam')
 
 # Define the start and end times for the data collection period
-start = timezone.localize(datetime(2018, 9, 5)).strftime('%a, %d %b %Y %H:%M:%S GMT')
-end = timezone.localize(datetime(2018, 9, 6)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+start = timezone.localize(datetime(2018, 9, 1)).strftime('%a, %d %b %Y %H:%M:%S GMT')
+end = timezone.localize(datetime(2018, 9, 5)).strftime('%a, %d %b %Y %H:%M:%S GMT')
 
 # API endpoint
 site_id = "caltech"  # Example site_id
@@ -49,15 +50,57 @@ df1['disconnectTime'] = pd.to_datetime(df1['disconnectTime'])
 # Extract the hours and days
 df1['ArrivalHour'] = df1['connectionTime'].dt.hour
 df1['DepartureHour'] = df1['disconnectTime'].dt.hour
-df1['DayOfWeek'] = df1['connectionTime'].dt.dayofweek
+df1['DayOfWeek'] = df1['connectionTime'].dt.dayofweek  #dt.day_name() for day name
+df1['Date'] = df1['connectionTime'].dt.date
+
 
 # Segregate df1 into weekdays and weekends
 df_weekdays = df1[df1['DayOfWeek'].between(0, 4)]
 df_weekends = df1[df1['DayOfWeek'].between(5, 6)]
 
+## CHECK DISTRIBUTION
+
+# Count occurrences of each hour for the entire dataset
+arrival_distribution = df1['ArrivalHour'].value_counts().sort_index()
+departure_distribution = df1['DepartureHour'].value_counts().sort_index()
+
+# Count occurrences of each date for arrivals and departures
+arrival_distribution_by_date = df1.groupby('Date')['ArrivalHour'].count()
+departure_distribution_by_date = df1.groupby('Date')['DepartureHour'].count()
+
+# Define the start and end dates for the plot range
+start_date = datetime.strptime('Sat, 01 Sep 2018 00:00:00 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+end_date = datetime.strptime('Sun, 30 Sep 2018 23:59:59 GMT', '%a, %d %b %Y %H:%M:%S GMT').date()
+
+##PLOT
+# Plot for the entire dataset using matplotlib directly
+plt.figure(figsize=(15, 6))
+
+# Plot for Arrival Distribution by Date
+plt.subplot(1, 2, 1)
+plt.plot(arrival_distribution_by_date, color='blue', marker='o', linestyle='-')
+plt.title('Overall Arrival Distribution by Date')
+plt.xlabel('Date')
+plt.ylabel('Count')
+plt.xticks(rotation=45)  # Rotate the x-labels for better readability
+plt.xlim(start_date, end_date)  # Limit the x-axis
+
+# Plot for Departure Distribution by Date
+plt.subplot(1, 2, 2)
+plt.plot(departure_distribution_by_date, color='green', marker='o', linestyle='-')
+plt.title('Overall Departure Distribution by Date')
+plt.xlabel('Date')
+plt.ylabel('Count')
+plt.xticks(rotation=45)  # Rotate the x-labels for better readability
+plt.xlim(start_date, end_date)  # Limit the x-axis
+
+plt.tight_layout()
+plt.show()
+sys.exit()
+
 #print to check
 print("Weekdays - Arrival and Departure Hours:\n", df_weekdays[['ArrivalHour', 'DepartureHour']])
-print("Weekends - Arrival and Departure Hours:\n", df_weekends[['ArrivalHour', 'DepartureHour']])
+#print("Weekends - Arrival and Departure Hours:\n", df_weekends[['ArrivalHour', 'DepartureHour']])
 
 def plot_distribution(arrival_df, departure_df, title_suffix):
     # Combine arrival and departure data into a single dataframe
@@ -80,9 +123,10 @@ departure_weekdays = df_weekdays[['DepartureHour']]
 arrival_weekends = df_weekends[['ArrivalHour']]
 departure_weekends = df_weekends[['DepartureHour']]
 
+
 #print to check
-print("Weekend Arrivals:\n", arrival_weekends)
-print("Weekend Departures:\n", departure_weekends)
+#print("Weekend Arrivals:\n", arrival_weekends)
+#print("Weekend Departures:\n", departure_weekends)
 
 # Plot distributions for weekdays (arrival and departure combined) and weekends (arrival and departure combined)
 plot_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
