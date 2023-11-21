@@ -46,6 +46,15 @@ else:
 # Convert the columns to datetime
 df1['connectionTime'] = pd.to_datetime(df1['connectionTime'])
 df1['disconnectTime'] = pd.to_datetime(df1['disconnectTime'])
+df1['doneChargingTime'] = pd.to_datetime(df1['doneChargingTime'])  # Convert doneChargingTime to datetime
+
+# Sort the DataFrame by 'doneChargingTime' in descending order
+df1_sorted = df1.sort_values(by='doneChargingTime', ascending=True)
+
+# Print the first few rows of the sorted DataFrame
+print(df1_sorted.head())
+
+sys.exit()
 
 # Extract the hours and days
 df1['ArrivalHour'] = df1['connectionTime'].dt.hour
