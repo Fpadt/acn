@@ -63,6 +63,9 @@ def process_data(df):
     df['kWhDelivered'] = pd.to_numeric(df['kWhDelivered'], errors='coerce')
     return df
 
+def count_per_minute(df, column):
+    return df[column].value_counts().sort_index()
+
 def calculate_kwh_per_hour(df):
     kwh_per_hour = {i: 0 for i in range(24)}
     for index, row in df.iterrows():
@@ -112,6 +115,7 @@ def plot_kwh_distribution(kwh_per_hour_df, title):
     plt.tight_layout()
     plt.show()
 
+
 ##Process all data
 df1 = process_data(all_data)
 
@@ -126,7 +130,6 @@ kwh_delivered_by_date = df1.groupby(df1['Date'])['kWhDelivered'].sum() #not corr
 start_date = start_datetime.date()
 end_date = end_datetime.date()
 plot_distribution(kwh_delivered_by_date, 'Total kWh Delivered by Date', 'Date', 'Total kWh Delivered', kind='line', start_date=start_date, end_date=end_date)
-
 
 # Plotting for kWh Delivered per Hour
 plot_kwh_distribution(kwh_per_hour_df, 'Total kWh Delivered per Hour of Day')
