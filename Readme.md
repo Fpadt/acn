@@ -77,3 +77,16 @@ Note: this tool seems to use an old panda's version being:
 [pandas python version][pandas-1.1.5]
 
 [pandas-1.1.5]: https://pandas.pydata.org/pandas-docs/version/1.1.5/getting_started/install.html
+
+## additional packages locally installed with pip via github
+
+```
+git clone https://github.com/caltech-netlab/adacharge
+cd adacharge
+mamba activate acn_py39
+mamba list 
+pip install .
+mamba list
+```
+
+note that after the pip install adacharge 0.1.0 will be in the environment
