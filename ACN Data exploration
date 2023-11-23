@@ -93,12 +93,14 @@ def plot_combined_distribution(arrival_df, departure_df, title_suffix):
         'Arrivals': arrival_df['ArrivalHour'].value_counts().sort_index(),
         'Departures': departure_df['DepartureHour'].value_counts().sort_index()
     })
+    combined_df = combined_df[(combined_df['Arrivals'] > 0) | (combined_df['Departures'] > 0)]
     combined_df.plot(kind='bar', figsize=(10, 5))
     plt.title(f'Combined Arrival and Departure Distribution over 24 Hours ({title_suffix})')
     plt.xlabel('Hour of Day')
     plt.ylabel('Count')
-    plt.xticks(range(24))
+    plt.xticks(range(len(combined_df)), combined_df.index)
     plt.tight_layout()
+    plt.show()
 
 def plot_kwh_distribution(kwh_per_hour_df, title):
     plt.figure(figsize=(10, 5))
@@ -125,8 +127,6 @@ start_date = start_datetime.date()
 end_date = end_datetime.date()
 plot_distribution(kwh_delivered_by_date, 'Total kWh Delivered by Date', 'Date', 'Total kWh Delivered', kind='line', start_date=start_date, end_date=end_date)
 
-plt.show()
-
 
 # Plotting for kWh Delivered per Hour
 plot_kwh_distribution(kwh_per_hour_df, 'Total kWh Delivered per Hour of Day')
@@ -145,6 +145,6 @@ departure_weekends = df_weekends[['DepartureHour']]
 plot_combined_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
 plot_combined_distribution(arrival_weekends, departure_weekends, 'Weekends')
 
-plt.show()
+#plt.show()
 
 
