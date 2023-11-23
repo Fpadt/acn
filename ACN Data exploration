@@ -64,7 +64,7 @@ def process_data(df):
     df['disconnectTime'] = pd.to_datetime(df['disconnectTime']) #Time when the EV unplugged.
     df['ArrivalHour'] = df['connectionTime'].dt.hour
     df['DepartureHour'] = df['disconnectTime'].dt.hour
-    #df['ArrivalMinute'] = df['connectionTime'].dt.strftime('%H:%M')
+    df['ArrivalMinute'] = df['connectionTime'].dt.strftime('%H:%M')
     #df['DepartureMinute'] = df['disconnectTime'].dt.strftime('%H:%M')
     df['DayOfWeek'] = df['connectionTime'].dt.dayofweek
     df['Date'] = df['connectionTime'].dt.date
@@ -122,21 +122,29 @@ def plot_kwh_distribution(kwh_per_hour_df, title):
     plt.tight_layout()
     plt.show()
 
+def calculate_and_plot_arrival_distribution_per_minute(df):
+    # Group by ArrivalMinute and calculate average arrivals per minute
+    arrival_distribution = df.groupby('ArrivalMinute').size().reset_index(name='Counts')
+    arrival_distribution['Counts'] = arrival_distribution['Counts'] / len(df['Date'].unique())
+    plt.figure(figsize=(15, 5))
+    sns.barplot(x='ArrivalMinute', y='Counts', data=arrival_distribution)
+    plt.xticks(rotation=90)
+    plt.title('Average Arrival Distribution Per Minute')
+    plt.xlabel('Minute of Day')
+    plt.ylabel('Average Arrivals')
+    plt.tight_layout()
+    plt.show()
 
 ##Process all data
 all_data = fetch_all_pages(initial_url, api_token)
 df1 = process_data(all_data)
 
-# Calculate kWh Delivered per hour
+##Data Aggregation##
+
 kwh_per_hour = calculate_kwh_per_hour(df1)
 kwh_per_hour_df = pd.DataFrame(list(kwh_per_hour.items()), columns=['Hour', 'kWhDelivered'])
 
-##Data Aggregation##
 kwh_delivered_by_date = df1.groupby(df1['Date'])['kWhDelivered'].sum() #not correct when charged over night
-
-## Plotting ##
-start_date = start_datetime.date()
-end_date = end_datetime.date()
 
 df_weekdays = df1[df1['DayOfWeek'].between(0, 4)]
 df_weekends = df1[df1['DayOfWeek'].between(5, 6)]
@@ -146,10 +154,19 @@ departure_weekdays = df_weekdays[['DepartureHour']]
 arrival_weekends = df_weekends[['ArrivalHour']]
 departure_weekends = df_weekends[['DepartureHour']]
 
+##Normalize distribution##
+arrival_minute_distribution = df1['ArrivalMinute'].value_counts().sort_index()
+normalized_minute_distribution = arrival_minute_distribution / arrival_minute_distribution.sum()
+
+## Plotting ##
+start_date = start_datetime.date()
+end_date = end_datetime.date()
+
 plot_kwh_distribution(kwh_per_hour_df, 'Total kWh Delivered per Hour of Day')
 plot_distribution(kwh_delivered_by_date, 'Total kWh Delivered by Date', 'Date', 'Total kWh Delivered', kind='line', start_date=start_date, end_date=end_date)
 plot_combined_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
 plot_combined_distribution(arrival_weekends, departure_weekends, 'Weekends')
+calculate_and_plot_arrival_distribution_per_minute(df1)
 
 #plt.show()
 
