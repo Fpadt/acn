@@ -3,7 +3,8 @@
 ## Installation overview
 
 1. clone repository from GitHub
-1. create conda environment
+1. create conda environment **acn-py39** 
+1. assign environment to notebook by clicking *select kernel* in upper right corner of notebook
 1. setup secret in ```.env``` file
 
 ### GitHub Clone
@@ -41,10 +42,11 @@ As we use our own registrated API-key to extract data from ACN-Data using the Py
 Use the following code in the Terminal (WSL)
 
 ```
-echo "export API_KEY=''" > .env
+echo "API_KEY=''" > .env
 ```
 
 Documentation on API can be found here: [ACN - Data Client][acn_api]
+The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9)
 
 ## Run jupyter notebook
 
