@@ -40,17 +40,23 @@ def fetch_data(url):
     else:
         print("Failed to fetch data. Status code:", response.status_code)
         return pd.DataFrame(), None
+    
+def fetch_all_pages(base_url, token):
+    all_data = pd.DataFrame()
+    current_url = base_url
+    while current_url:
+        response = requests.get(current_url, auth=HTTPBasicAuth(token, ''))
+        if response.status_code == 200:
+            data = response.json()
+            sessions = pd.DataFrame(data['_items'])
+            all_data = pd.concat([all_data, sessions])
+            next_link = data['_links'].get('next', {}).get('href')
+            current_url = base_url + next_link if next_link else None
+        else:
+            print(f"Failed to fetch data. Status code: {response.status_code}")
+            break
+    return all_data
 
-# Tried to make function to Fetch all pages of data, but failed
-all_data = pd.DataFrame()
-current_url = initial_url
-while current_url:
-    data, next_link = fetch_data(current_url)
-    all_data = pd.concat([all_data, data])
-    if next_link:
-        current_url = f"https://ev.caltech.edu/api/v1/{next_link}"
-    else:
-        break
 
 def process_data(df):
     df['connectionTime'] = pd.to_datetime(df['connectionTime'])
@@ -58,13 +64,13 @@ def process_data(df):
     df['disconnectTime'] = pd.to_datetime(df['disconnectTime']) #Time when the EV unplugged.
     df['ArrivalHour'] = df['connectionTime'].dt.hour
     df['DepartureHour'] = df['disconnectTime'].dt.hour
+    #df['ArrivalMinute'] = df['connectionTime'].dt.strftime('%H:%M')
+    #df['DepartureMinute'] = df['disconnectTime'].dt.strftime('%H:%M')
     df['DayOfWeek'] = df['connectionTime'].dt.dayofweek
     df['Date'] = df['connectionTime'].dt.date
     df['kWhDelivered'] = pd.to_numeric(df['kWhDelivered'], errors='coerce')
     return df
 
-def count_per_minute(df, column):
-    return df[column].value_counts().sort_index()
 
 def calculate_kwh_per_hour(df):
     kwh_per_hour = {i: 0 for i in range(24)}
@@ -105,6 +111,7 @@ def plot_combined_distribution(arrival_df, departure_df, title_suffix):
     plt.tight_layout()
     plt.show()
 
+
 def plot_kwh_distribution(kwh_per_hour_df, title):
     plt.figure(figsize=(10, 5))
     kwh_per_hour_df['kWhDelivered'].plot(kind='bar')
@@ -117,6 +124,7 @@ def plot_kwh_distribution(kwh_per_hour_df, title):
 
 
 ##Process all data
+all_data = fetch_all_pages(initial_url, api_token)
 df1 = process_data(all_data)
 
 # Calculate kWh Delivered per hour
@@ -129,14 +137,7 @@ kwh_delivered_by_date = df1.groupby(df1['Date'])['kWhDelivered'].sum() #not corr
 ## Plotting ##
 start_date = start_datetime.date()
 end_date = end_datetime.date()
-plot_distribution(kwh_delivered_by_date, 'Total kWh Delivered by Date', 'Date', 'Total kWh Delivered', kind='line', start_date=start_date, end_date=end_date)
 
-# Plotting for kWh Delivered per Hour
-plot_kwh_distribution(kwh_per_hour_df, 'Total kWh Delivered per Hour of Day')
-
-
-#Plotting Arrival and Departure Distribution
-# Segregate df1 into weekdays and weekends
 df_weekdays = df1[df1['DayOfWeek'].between(0, 4)]
 df_weekends = df1[df1['DayOfWeek'].between(5, 6)]
 
@@ -145,6 +146,8 @@ departure_weekdays = df_weekdays[['DepartureHour']]
 arrival_weekends = df_weekends[['ArrivalHour']]
 departure_weekends = df_weekends[['DepartureHour']]
 
+plot_kwh_distribution(kwh_per_hour_df, 'Total kWh Delivered per Hour of Day')
+plot_distribution(kwh_delivered_by_date, 'Total kWh Delivered by Date', 'Date', 'Total kWh Delivered', kind='line', start_date=start_date, end_date=end_date)
 plot_combined_distribution(arrival_weekdays, departure_weekdays, 'Weekdays')
 plot_combined_distribution(arrival_weekends, departure_weekends, 'Weekends')
 
