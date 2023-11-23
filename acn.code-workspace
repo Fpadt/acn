@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "acnportal-experiments",
+			"path": "../acnportal-experiments"
+		}
+	],
+	"settings": {}
+}

@@ -22,7 +22,7 @@ In order to be able to execute these jupyter notebooks one needs to setup the co
 This can be done with the following line of code, see [Creating an environment from an environment.yml file][conda_yml] for details. 
 
 ```
-conda env create -f environment.yml
+conda env create -f ACN.yml
 ```
 
 Note that after the environment is created it needs to be selected for the jupyter notebook by either
