@@ -18,8 +18,8 @@ api_token = os.getenv('API_KEY')
 timezone = pytz.timezone('Europe/Amsterdam')
 
 # Define the start and end times for the data collection period and x-axis plotting
-start_datetime = timezone.localize(datetime(2018, 9, 3))
-end_datetime = timezone.localize(datetime(2018, 9, 9))
+start_datetime = timezone.localize(datetime(2019, 1, 1))
+end_datetime = timezone.localize(datetime(2019, 2, 15))
 start = start_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')
 end = end_datetime.strftime('%a, %d %b %Y %H:%M:%S GMT')
 
