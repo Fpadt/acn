@@ -99,7 +99,6 @@ dependencies:
   - zstd=1.5.0=ha95c52a_0
   - pip:
       - acnportal==0.3.2
-      - adacharge==0.1.0
       - certifi==2023.7.22
       - cffi==1.16.0
       - charset-normalizer==3.3.1
