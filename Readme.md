@@ -16,7 +16,8 @@ update the file .env with API_KEY
 
 1. setup secret in ```.env``` file
 
-Documentation on API can be found here: [ACN - Data Client][acn_api]
+Documentation on API can be found here: [ACN - Data Client][acn_api]  
+
 The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9)
 
 ## Run jupyter notebook
