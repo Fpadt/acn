@@ -14,9 +14,7 @@ rm -rf acn_setup
 
 update the file ```.env``` with API_KEY
 
-Documentation on API can be found here: [ACN - Data Client][acn_api]  
-
-The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9)
+The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9), additional info can be found here: [ACN - Data Client][acn_api]  
 
 ## Run jupyter notebook
 
