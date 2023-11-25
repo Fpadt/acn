@@ -12,9 +12,7 @@ rm -rf acn_setup
 
 ### API-KEY
 
-update the file .env with API_KEY
-
-1. setup secret in ```.env``` file
+update the file ```.env``` with API_KEY
 
 Documentation on API can be found here: [ACN - Data Client][acn_api]  
 
