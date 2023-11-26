@@ -5,7 +5,7 @@
 ### Python environment and GitHub repo's
 
 ```
-git clone https://gist.github.com/e25a92908f1630375fa0163b2f383142.git acn_setup && source acn_setup/acn-setup.sh && rm -rf ~/acn_setup
+git clone https://gist.github.com/bc46a03309c1d3ceaefd680f6962d415.git acn_setup && source acn_setup/acn-setup.sh && rm -rf ~/acn_setup
 ```
 
 ### API-KEY
