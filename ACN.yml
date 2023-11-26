@@ -1,4 +1,4 @@
-name: acn_py38
+name: acn_jads
 channels:
   - conda-forge
   - nodefaults
