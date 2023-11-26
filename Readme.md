@@ -18,6 +18,11 @@ update the files with API Key
 
 The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9), additional info can be found here: [ACN - Data Client][acn_api]  
 
+### MOSEK license
+
+Copy the MOSEK license to a new folder called ~/mosek. The license can be downloaded [from onedrive here][mosek_lic]  
+
+
 ## Run jupyter notebook
 
 1. Open Visual Studio Code
@@ -40,6 +45,7 @@ The API key for this project is stored [here (authorization required)](https://1
 [ACM-sim]:         https://acnportal.readthedocs.io/en/latest/
 [acn_portal_pypi]: https://pypi.org/project/acnportal/
 [conda_yml]:       https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
+[mosek_lic]: https://1drv.ms/u/s!AiogHeTeve1hjvpAHK-FCdqT2ikhfQ?e=DM0Uxm
 [vsc_python_int]:  https://code.visualstudio.com/docs/python/environments#_working-with-python-interpreters
 [vsc_conda_env]:   https://code.visualstudio.com/docs/python/environments#_create-a-conda-environment-in-the-terminal
 [acn_api]:         https://acnportal.readthedocs.io/en/latest/acndata/data_client.html
