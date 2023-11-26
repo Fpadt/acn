@@ -1,4 +1,4 @@
-name: acn_jads
+name: env_acn
 channels:
   - conda-forge
   - nodefaults
