@@ -4,8 +4,13 @@
 			"path": "."
 		},
 		{
-			"name": "acnportal-experiments",
-			"path": "../acnportal-experiments"
+			"path": "../acn_calt"
+		},
+		{
+			"path": "../exp_calt"
+		},
+		{
+			"path": "../exp_jads"
 		}
 	],
 	"settings": {}
