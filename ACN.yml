@@ -65,7 +65,6 @@ dependencies:
   - zipp=3.17.0=pyhd8ed1ab_0
   - pip:
       - acnportal==0.3.3
-      - adacharge==0.1.0
       - certifi==2023.11.17
       - charset-normalizer==3.3.2
       - clarabel==0.6.0
