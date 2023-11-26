@@ -12,16 +12,18 @@ rm -rf acn_setup
 
 ### API-KEY
 
-update the file ```.env``` with API_KEY
+update the files with API Key 
+- ```~/acn/acn_jads/.env```
+- ```~/acn/exp_jads/.env``` 
 
 The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9), additional info can be found here: [ACN - Data Client][acn_api]  
 
 ## Run jupyter notebook
 
 1. Open Visual Studio Code
-1. File > Open Workspace from File... ```~/acn/acn.code-workspace```
+1. File > Open Workspace from File... ```~/acn/acn_jads/acn.code-workspace```
 1. Open ACN-sim_L0x.ipynb
-    1. Select kernel acn_py39 (Python 3.9.18)
+    1. Select kernel env_acn (python 3.8.18)
     1. Clear All Outputs 
     1. Restart
     1. Run All
@@ -41,16 +43,4 @@ The API key for this project is stored [here (authorization required)](https://1
 [vsc_python_int]:  https://code.visualstudio.com/docs/python/environments#_working-with-python-interpreters
 [vsc_conda_env]:   https://code.visualstudio.com/docs/python/environments#_create-a-conda-environment-in-the-terminal
 [acn_api]:         https://acnportal.readthedocs.io/en/latest/acndata/data_client.html
-
-
-## Versioning
-
-Note: this tool seems to use an old panda's version being:
-
-[pandas python version][pandas-1.1.5]
-
-[pandas-1.1.5]: https://pandas.pydata.org/pandas-docs/version/1.1.5/getting_started/install.html
-
-## additional packages locally installed with pip via github
-
 
