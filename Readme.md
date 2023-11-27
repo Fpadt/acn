@@ -5,12 +5,11 @@
 ### Python environment and GitHub repo's
 
 Copy the code below by clicking the icon on the far right and paste this code in a terminal.  
-After execution a new Workspace will be opened.
+After execution a new Workspace will be opened, a new folder structure will be in the home directory and a new Python environment will be available.
 
 ```
 git clone https://gist.github.com/bc46a03309c1d3ceaefd680f6962d415.git acn_setup && source acn_setup/acn-setup.sh && cd ~ && rm -rf ~/acn_setup
 ```
-After execution the following changes have been applied:
 
 #### Folder structure
 
