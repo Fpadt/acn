@@ -4,13 +4,13 @@
 			"path": "."
 		},
 		{
+			"path": "../exp_jads"
+		},		
+		{
 			"path": "../acn_calt"
 		},
 		{
 			"path": "../exp_calt"
-		},
-		{
-			"path": "../exp_jads"
 		}
 	],
 	"settings": {}
