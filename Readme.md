@@ -12,12 +12,13 @@ After execution the following changes have been applied:
 
 #### Folder structure
 
-The following folder structure will be in your home-folder
-~/acn
- |- acn_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)
- |- acn_jads
- |- exp_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)
- |- exp_jads
+The following folder structure will be in your home-folder  
+
+~/acn  
+ |- acn_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)  
+ |- acn_jads  
+ |- exp_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)  
+ |- exp_jads  
 
 ####
 A new python environment will be availble called ```env_acn```.
