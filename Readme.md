@@ -4,7 +4,7 @@
 
 ### Python environment and GitHub repo's
 
-Copy the code below and paste this in a terminal. 
+Copy the code below by clicking the icon on the far right and paste this code in a terminal. 
 ```
 git clone https://gist.github.com/bc46a03309c1d3ceaefd680f6962d415.git acn_setup && source acn_setup/acn-setup.sh && rm -rf \~/acn_setup
 ```
