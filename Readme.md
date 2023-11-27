@@ -39,11 +39,20 @@ Download the license file called mosek.lic and save it in this folder. This file
 
 ## Run jupyter notebook
 
-1. Open a jupyter note book, e.g. ACN-sim_L0x.ipynb
+Open a jupyter note book, e.g. ACN-sim_L0x.ipynb
     1. Select kernel env_acn (python 3.8.18)
     1. Clear All Outputs 
     1. Restart
     1. Run All
+
+Try to execute the following ACN notebook:  
+~/  
+  acn/
+    exp_jads/
+      examples/
+        2-Algorithm-Comparison/
+          2.1-Comparing-Algorithms-with-Constrained-Infrastructure/
+            2.1-comparing-algorithms-with-constrained-infrastructure.ipynb
 
 ## Links
 
