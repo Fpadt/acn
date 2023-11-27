@@ -47,12 +47,12 @@ Open a jupyter note book, e.g. ACN-sim_L0x.ipynb
 
 Try to execute the following ACN notebook:  
 ~/  
-  acn/
-    exp_jads/
-      examples/
-        2-Algorithm-Comparison/
-          2.1-Comparing-Algorithms-with-Constrained-Infrastructure/
-            2.1-comparing-algorithms-with-constrained-infrastructure.ipynb
+  acn/  
+    exp_jads/  
+      examples/  
+        2-Algorithm-Comparison/  
+          2.1-Comparing-Algorithms-with-Constrained-Infrastructure/  
+            2.1-comparing-algorithms-with-constrained-infrastructure.ipynb  
 
 ## Links
 
