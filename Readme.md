@@ -4,7 +4,9 @@
 
 ### Python environment and GitHub repo's
 
-Copy the code below by clicking the icon on the far right and paste this code in a terminal. 
+Copy the code below by clicking the icon on the far right and paste this code in a terminal.  
+After execution a new Workspace will be opened.
+
 ```
 git clone https://gist.github.com/bc46a03309c1d3ceaefd680f6962d415.git acn_setup && source acn_setup/acn-setup.sh && cd ~ && rm -rf ~/acn_setup
 ```
@@ -20,28 +22,24 @@ The following folder structure will be in your home-folder
  |- exp_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)  
  |- exp_jads  
 
-####
-A new python environment will be availble called ```env_acn```.
-to check execute ```mamba env list```
+#### Python Environment
+A new python environment will be availble called ```env_acn```.  
+Execute ```mamba env list``` to see if it exists.
 
 ### API-KEY
 
-update the files with API Key 
-- ```~/acn/acn_jads/.env```
-- ```~/acn/exp_jads/.env``` 
+In the new Workspace 2 .env files will e open in which you need to populate the API_KEY.  
 
 The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9), additional info can be found here: [ACN - Data Client][acn_api]  
 
 ### MOSEK license
 
-Copy the MOSEK license to a new folder called ~/mosek. The license can be downloaded [from onedrive here][mosek_lic]  
-
+In your home directory you will have an emtpy folder called mosek.  
+Download the license file called mosek.lic and save it in this folder. This file can be downloaded [from onedrive here][mosek_lic]  
 
 ## Run jupyter notebook
 
-1. Open Visual Studio Code
-1. File > Open Workspace from File... ```~/acn/acn_jads/acn.code-workspace```
-1. Open ACN-sim_L0x.ipynb
+1. Open a jupyter note book, e.g. ACN-sim_L0x.ipynb
     1. Select kernel env_acn (python 3.8.18)
     1. Clear All Outputs 
     1. Restart
