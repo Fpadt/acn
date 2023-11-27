@@ -4,9 +4,24 @@
 
 ### Python environment and GitHub repo's
 
+Copy the code below and paste this in a terminal. 
 ```
 git clone https://gist.github.com/bc46a03309c1d3ceaefd680f6962d415.git acn_setup && source acn_setup/acn-setup.sh && rm -rf \~/acn_setup
 ```
+After execution the following changes have been applied:
+
+#### Folder structure
+
+The following folder structure will be in your home-folder
+~/acn
+ |- acn_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)
+ |- acn_jads
+ |- exp_calt     (this is the original repository for reference, changes CAN NOT be pushed to GIT)
+ |- exp_jads
+
+####
+A new python environment will be availble called ```env_acn```.
+to check execute ```mamba env list```
 
 ### API-KEY
 
