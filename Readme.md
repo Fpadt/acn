@@ -39,6 +39,17 @@ The API key for this project is stored [here (authorization required)](https://1
 In your home directory you will have an emtpy folder called mosek.  
 Download the license file called mosek.lic and save it in this folder. This file can be downloaded [from onedrive here][mosek_lic]  
 
+### Sim results from OneDrive
+
+In order to load the previous results of the simulation done (12-13 hours) you need to download the file ``sims.zip`` from OneDrive and unzip this into 
+``~/acn/exp_jads/examples/2-Algorithm-Comparison/2.1-Comparing-Algorithms-with-Constrained-Infrastructure/results``
+
+1. In VSC right click the folder ``results`` (as mentioned above) in the VSC Explorer and select ```Reveal in File Explorer```, Shift+Alt+R. 
+1. Open Onedrive and download the file ``sims.zip`` to a temporary folder
+1. UnZip this file in a folder called ``sims`` in the temporary folder (<60 secs.)
+1. Copy the folder ``sims`` to the folder ``results`` in the file Explorer opened at the first step (337 files, 122 MB)
+1. Execute the next Python Cell to load the events (<4 minutes.)
+
 ## Run jupyter notebook
 
 Open a jupyter note book, e.g. ACN-sim_L0x.ipynb
