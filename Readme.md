@@ -80,8 +80,8 @@ Try to execute the following ACN notebook:
 [ACM-sim]:         https://acnportal.readthedocs.io/en/latest/
 [acn_portal_pypi]: https://pypi.org/project/acnportal/
 [conda_yml]:       https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
-[mosek_lic]: https://1drv.ms/u/s!AiogHeTeve1hjvpAHK-FCdqT2ikhfQ?e=DM0Uxm
-[sim_results]: https://1drv.ms/u/s!AiogHeTeve1hj4MPKhNDWJn26EDWoQ?e=XdZ8Ev
+[mosek_lic]:       https://1drv.ms/u/s!AiogHeTeve1hjvpAHK-FCdqT2ikhfQ?e=DM0Uxm
+[sim_results]:     https://1drv.ms/u/s!AiogHeTeve1hj4MPKhNDWJn26EDWoQ?e=XdZ8Ev
 [vsc_python_int]:  https://code.visualstudio.com/docs/python/environments#_working-with-python-interpreters
 [vsc_conda_env]:   https://code.visualstudio.com/docs/python/environments#_create-a-conda-environment-in-the-terminal
 [acn_api]:         https://acnportal.readthedocs.io/en/latest/acndata/data_client.html
