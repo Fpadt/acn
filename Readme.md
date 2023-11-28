@@ -37,7 +37,7 @@ The API key for this project is stored [here (authorization required)](https://1
 ### MOSEK license
 
 In your home directory you will have an emtpy folder called mosek.  
-Download the license file called mosek.lic and save it in this folder. This file can be downloaded [from onedrive here][mosek_lic]  
+Download the license file called [mosek.lic][mosek_lic] and save it in this folder. 
 
 ### Sim results from OneDrive
 
