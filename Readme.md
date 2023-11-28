@@ -32,7 +32,7 @@ Execute ```mamba env list``` to see if it exists.
 
 In the new Workspace 2 .env files will e open in which you need to populate the API_KEY.  
 
-The API key for this project is stored [here (authorization required)](https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9), additional info can be found here: [ACN - Data Client][acn_api]  
+The API key for this project is stored in file [API_KEY.txt][API_KEY], additional info can be found here: [ACN - Data Client][acn_api]  
 
 ### MOSEK license
 
@@ -80,6 +80,7 @@ Try to execute the following ACN notebook:
 [ACM-sim]:         https://acnportal.readthedocs.io/en/latest/
 [acn_portal_pypi]: https://pypi.org/project/acnportal/
 [conda_yml]:       https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
+[API_KEY]:         https://1drv.ms/t/s!AiogHeTeve1hjvo-_7UAopYbxRS1qQ?e=LKaLS9
 [mosek_lic]:       https://1drv.ms/u/s!AiogHeTeve1hjvpAHK-FCdqT2ikhfQ?e=DM0Uxm
 [sim_results]:     https://1drv.ms/u/s!AiogHeTeve1hj4MPKhNDWJn26EDWoQ?e=XdZ8Ev
 [vsc_python_int]:  https://code.visualstudio.com/docs/python/environments#_working-with-python-interpreters
