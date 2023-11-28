@@ -41,7 +41,8 @@ Download the license file called mosek.lic and save it in this folder. This file
 
 ### Sim results from OneDrive
 
-In order to load the previous results of the simulation done (12-13 hours) you need to download the file ``sims.zip`` from OneDrive and unzip this into 
+In order to load the previous results of the simulation done (12-13 hours) you need to download the file ``sims.zip`` [from onedrive here][mosek_lic].  
+Next, unzip and copy it into: 
 ``~/acn/exp_jads/examples/2-Algorithm-Comparison/2.1-Comparing-Algorithms-with-Constrained-Infrastructure/results``
 
 1. In VSC right click the folder ``results`` (as mentioned above) in the VSC Explorer and select ```Reveal in File Explorer```, Shift+Alt+R. 
